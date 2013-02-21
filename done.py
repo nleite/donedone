@@ -4,10 +4,14 @@ from pymongo import Connection
 from logging.handlers import SysLogHandler as log
 import simplejson as json
 from datetime import datetime
+import logging
+import logging.handlers
+from restore import FileRestore
 """
 Let's build a small CLI tool to mark all my done tasks of the day
 """
 config={}
+logger = logging.getLogger('donedone')
 
 class FileStore(object):
 
@@ -15,7 +19,9 @@ class FileStore(object):
         self.fp = open( os.path.expanduser(filename), "a")
 
     def save(self, data, **kwargs):
+        data['_ts']=data['_ts'].isoformat()
         self.fp.write( json.dumps(data))
+        self.fp.write('\n')
         self.fp.flush()
         self.fp.close()
         return True
@@ -32,10 +38,12 @@ class MongoStore(object):
 
     def save(self, data, **kwargs ):
         col = self.conn[self.dbname][self.collectionname]
+        col.ensure_index( '_ts', unique=True)
         for key, value in kwargs.items():
             setattr(self, key, value)
         _id = col.save( data, self.j, self.w )
         #log the storage of the task
+        logger.info( 'Store done task with _id:%s' % _id)
         return _id != None
 
 
@@ -43,7 +51,7 @@ def save(store, data):
     """
     Saves the data into the datastore
     """
-    data['_ts'] = datetime.now().isoformat()
+    data['_ts'] = datetime.now()
 
     return None != store.save( data, j=config.get('j',False ))
 
@@ -66,7 +74,7 @@ def get_online_store():
         return MongoStore( config['host'], config['dbname'], config['collname'])
     except Exception,e :
         #log message and return null
-        print('WHAT THE HELL! %s' % e)
+        logger.warning( "Online storage not available, using local file store" )
         return None
 
 
@@ -77,15 +85,29 @@ def get_store():
     store = get_online_store()
     if store is None:
         #log offline mode on
+        logger.info( "Using local storage" )
         store = get_ofline_store()
-
     return store
 
 def restore():
     """
     Get all the offline store tasks
     """
-    pass
+    try:
+        store = get_online_store()
+        if store is not None:
+            fr = FileRestore( config['offline'], get_online_store() )
+            nrestored = fr.run()
+            logger.warn('Restored %s tasks' % nrestored )
+    except Exception,e:
+        logger.error('Cannot restore right now. Try latter %s' % e)
+
+def init_logging():
+    """
+    Initialize the logger for this execution
+    """
+    global logger
+    logger.addHandler( logging.handlers.SysLogHandler())
 
 
 def init(conf_file='~/.done.cfg'):
@@ -96,6 +118,8 @@ def init(conf_file='~/.done.cfg'):
     conf = ConfigParser.ConfigParser()
     conf.readfp(open( os.path.expanduser(conf_file) ))
     config = dict( conf._sections['BASE'])
+    init_logging()
+    restore()
 
 def main():
     """
