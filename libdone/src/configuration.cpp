@@ -2,17 +2,19 @@
 #include <fstream>
 #include "configuration.h"
 
-std::string trim(std::string const& source, char const* delims = " \t\r\n") {
+std::string trim(const std::string& source, const char* delims = " \t\r\n") {
   std::string result(source);
   std::string::size_type index = result.find_last_not_of(delims);
-  if(index != std::string::npos)
+  if(index != std::string::npos){
     result.erase(++index);
-
+  }
   index = result.find_first_not_of(delims);
-  if(index != std::string::npos)
-    result.erase(0, index);
-  else
+
+  if(index == std::string::npos){
     result.erase();
+  } else {
+    result.erase(0, index);
+  }
   return result;
 }
 
@@ -38,18 +40,42 @@ namespace done {
       value = trim(line.substr(eq_sign_pos+1));
       // check for URI "uri".compare(key)
       if (keys[0].compare(key) == 0){
-        uri = value;
+         uri = value;
       }
     }
   }
 
-  std::string const Config::get_uri(){
+  const std::string& Config::get_uri(){
     return uri;
   }
 
-  std::string const Config::get_uri_schema(){
-    int column_sign_pos = uri.find(':');
+  const std::string Config::get_uri_schema(){
+    size_t column_sign_pos = uri.find(':');
+    if(column_sign_pos == std::string::npos){
+      throw BadUriSchema("schema delimiter (column sign ':') not found", uri);
+    }
     return trim(uri.substr(0, column_sign_pos));
   }
 
+  // Config operators
+  bool operator ==(const Config& a, const Config& b){
+    // check for reference addresses
+    if (&a == &b){
+      return true;
+    }
+    // check if uri and file path are the same
+    if (a.uri.compare(b.uri) == 0 && a.path.compare(b.path) == 0){
+      return true;
+    }
+    return false;
+  }
+
+// Configuration Exceptions
+
+  BadUriSchema::BadUriSchema(const std::string& message, const std::string& uri )
+  : message(message), uri(uri) {}
+
+  char const* BadUriSchema::what() const noexcept{
+        return ("uri: \'"+uri+"\' is incorrect - " + message ).c_str();
+  }
 }

@@ -1,11 +1,12 @@
 #pragma once
 #include <string>
+#include <exception>
 
 using namespace std;
 
 namespace done {
   // default configuration file path
-  const std::string default_config_path = "./.done/config";
+  const std::string default_config_path = "/tmp/done/config";
 
   class Config {
     private:
@@ -15,6 +16,8 @@ namespace done {
       std::string uri;
       // for more than one value allowed ...
       std::string keys[1] = {"uri"};
+      // operator ==
+      friend bool operator ==(const Config& a, const Config& b);
     public:
 
       // Constructor that takes a configuration file path value as argument
@@ -25,9 +28,19 @@ namespace done {
       // get the current set config file path
       const std::string& get_config_file_path();
       // get uri
-      std::string const get_uri();
+      const std::string& get_uri();
       // get schema uri
-      std::string const get_uri_schema();
+      const std::string get_uri_schema();
   };
 
+
+  class BadUriSchema : public std::exception {
+    private:
+      const std::string uri;
+      const std::string message;
+
+    public:
+      BadUriSchema(const std::string& message, const std::string& uri );
+      char const* what() const noexcept;
+  };
 }
