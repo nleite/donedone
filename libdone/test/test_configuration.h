@@ -35,3 +35,4 @@ class TestConfig : public CppUnit::TestFixture {
 
 void generate_tmp_config_file(std::string* filename, std::string line);
 void delete_tmp_config_file(std::string *filename);
+void add_alphanum_string(const int size, std::string* to_append);
