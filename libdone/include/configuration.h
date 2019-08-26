@@ -37,7 +37,7 @@ namespace done {
   };
 
 
-  class BadUriSchema : public std::exception {
+  class BadUriSchema : virtual public std::exception {
     private:
       const std::string uri;
       const std::string message;

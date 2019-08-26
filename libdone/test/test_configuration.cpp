@@ -24,7 +24,7 @@ void add_alphanum_string(const int size, std::string* to_append){
   }
 }
 
-void TestConfig::generate_tmp_config_file(std::string* filename, std::string line){
+void generate_tmp_config_file(std::string* filename, std::string line){
   add_alphanum_string(6, filename);
   std::ofstream fp;
   fp.open(filename->c_str());
@@ -32,7 +32,7 @@ void TestConfig::generate_tmp_config_file(std::string* filename, std::string lin
   fp.close();
 }
 
-void TestConfig::delete_tmp_config_file(std::string* filename){
+void delete_tmp_config_file(std::string* filename){
   std::remove(filename->c_str());
 }
 

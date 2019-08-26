@@ -20,9 +20,6 @@ class TestConfig : public CppUnit::TestFixture {
     done::Config *cfg1, *cfg2, *cfg3, *bad_config_uri_schema;
     std::string cfg2_file_path = "/tmp/config.";
 
-    void generate_tmp_config_file(std::string* filename, std::string line);
-    void delete_tmp_config_file(std::string *filename);
-
   public:
     void setUp();
     void tearDown();
@@ -35,3 +32,6 @@ class TestConfig : public CppUnit::TestFixture {
     void test_good_uri_schema();
 
 };
+
+void generate_tmp_config_file(std::string* filename, std::string line);
+void delete_tmp_config_file(std::string *filename);
