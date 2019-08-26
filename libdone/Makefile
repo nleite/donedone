@@ -32,12 +32,12 @@ INCLIST := $(patsubst include/%,-I include/%,$(INCDIRS))
 BUILDLIST := $(patsubst include/%,$(BUILDDIR)/%,$(INCDIRS))
 
 
-
+CPPVERSION= c++1z
 CFLAGS := -c
 INC := -I $(INCLIST) -I /usr/local/include
 LIB := -L /usr/local/lib
 
-CFLAGS += -std=c++11 -stdlib=libc++ -O2
+CFLAGS += -std=$(CPPVERSION) -stdlib=libc++ -O2
 UNITTEST := -lcppunit
 # Test flags
 CTESTFLAGS := -Wl,--no-as-needed $(UNITTEST) $(CFLAGS)
