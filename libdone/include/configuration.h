@@ -18,6 +18,9 @@ namespace done {
       std::string keys[1] = {"uri"};
       // operator ==
       friend bool operator ==(const Config& a, const Config& b);
+      // operator !=
+      friend bool operator !=(const Config& a, const Config& b);
+
     public:
 
       // Constructor that takes a configuration file path value as argument

@@ -70,6 +70,11 @@ namespace done {
     return false;
   }
 
+  bool operator !=(const Config& a, const Config& b){
+    // check for reference addresses
+    return !(a == b);
+  }
+
 // Configuration Exceptions
 
   BadUriSchema::BadUriSchema(const std::string& message, const std::string& uri )
