@@ -1,15 +1,16 @@
 #include <string>
+#include <typeinfo>
+#include <fstream>
 #include "backend.h"
 #include "configuration.h"
-#include <typeinfo>
+#include "task.h"
+
 // Backend is a class that handles different backend implementations
 // For now we are going to keep it to one file backend
 
 using namespace std;
 using namespace done;
 namespace backend{
-
-
 
 //\ FileBackend
 
@@ -18,9 +19,31 @@ namespace backend{
   }
 
   std::vector<Task> FileBackend::get_tasks(){
+    load_tasks_from_file();
     return tasks;
   }
 
+  void FileBackend::load_tasks_from_file(){
+    // open file
+    std::ifstream fp(tasks_file.c_str());
+    // read file
+    std::string line;
+    Json::CharReader * reader = builder.newCharReader();
+    while(std::getline(fp, line)){
+      Json::Value j;
+      string errors;
+      bool parsing_result = reader->parse(line.c_str(), line.c_str() + line.size(), &j, &errors);
+      if(!parsing_result){
+        // cout << errors << endl;
+        break;
+      }
+      // instanciate tasks
+      // add Task to vector
+      tasks.push_back(Task(j["title"].asString()));
+    }
+    // close file
+    fp.close();
+  }
 
 //\ BackendNotSupported
 

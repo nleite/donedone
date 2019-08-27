@@ -13,10 +13,12 @@ class TestBackend : public CppUnit::TestFixture {
 
   private:
     done::Config *cfg, *unsupportedcfg;
+    backend::FileBackend *fe;
 
     CPPUNIT_TEST_SUITE(TestBackend);
     CPPUNIT_TEST( test_file_backend );
     CPPUNIT_TEST( test_unsupported_schema );
+    CPPUNIT_TEST( test_filebackend_get_tasks_size );
     CPPUNIT_TEST_SUITE_END();
 
   public:
@@ -24,5 +26,5 @@ class TestBackend : public CppUnit::TestFixture {
     void tearDown();
     void test_file_backend();
     void test_unsupported_schema();
-
+    void test_filebackend_get_tasks_size();
 };

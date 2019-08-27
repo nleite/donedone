@@ -40,6 +40,8 @@ void TestBackend::setUp(){
   std::string nline = "uri=notgood:///good_file";
   generate_tmp_config_file(&nf, nline);
   unsupportedcfg = new Config(nf);
+
+  fe = new FileBackend(tasks_filename);
 }
 
 void TestBackend::tearDown(){
@@ -48,7 +50,7 @@ void TestBackend::tearDown(){
   delete cfg;
   config_filename = unsupportedcfg->get_config_file_path();
   delete unsupportedcfg;
-
+  delete fe;
 }
 
 void TestBackend::test_file_backend(){
@@ -60,4 +62,10 @@ void TestBackend::test_file_backend(){
 void TestBackend::test_unsupported_schema(){
   CPPUNIT_ASSERT_THROW(
     backend::load_backend(*unsupportedcfg), backend::BackendNotSupported );
+}
+
+void TestBackend::test_filebackend_get_tasks_size(){
+  vector<Task> tasks = fe->get_tasks();
+  size_t expected = 2;
+  CPPUNIT_ASSERT_EQUAL(expected, tasks.size());
 }

@@ -1,8 +1,10 @@
 #pragma once
 #include <string>
 #include <vector>
+#include <json/reader.h>
 #include "configuration.h"
 #include "task.h"
+
 
 using namespace std;
 using namespace done;
@@ -28,12 +30,14 @@ namespace backend{
   class FileBackend: virtual public Backend {
     private:
       const std::string tasks_file;
-      // friend bool operator ==(const FileBackend& a, const FileBackend& b);
+      void load_tasks_from_file();
+      Json::CharReaderBuilder builder;
 
     public:
       // constructor
       FileBackend(std::string tfp): tasks_file(tfp) {
         hello = "FileBackend";
+        builder.settings_["allowSingleQuotes"] = true;
       };
 
       virtual std::string hi();

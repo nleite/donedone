@@ -1,5 +1,5 @@
 // to compile the file on macosx
-// > g++ -arch x86_64 -stdlib=libc++ -O2 -L /usr/local/lib -std=c++1z -ljsoncpp -I /usr/local/include json_file_reader.cpp
+// > g++ -arch x86_64 -stdlib=libc++ -O2 -L /usr/local/lib -std=c++1z -ljsoncpp -I /usr/local/include json_file_reader.cpp -o json
 #include <fstream>
 #include <iostream>
 #include <vector>

@@ -15,10 +15,10 @@ namespace done{
   }
 
   void list_tasks(){
-    // load the configured backend
     /// load configuration file
     Config cfg = load_config();
-    backend::Backend& b = backend::load_backend(cfg);
+    // load the configured backend
+    auto b = backend::load_backend(cfg);
     // read all tasks from backend
 
     // print tasks to stdout
