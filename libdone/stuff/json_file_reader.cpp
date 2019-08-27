@@ -27,7 +27,7 @@ vector<Json::Value> read_json_from_file(std::string filename){
   vector<Json::Value> json_lines;
   Json::CharReaderBuilder builder;
   builder.settings_["allowSingleQuotes"] = true;
-  Json::CharReader * reader = builder.newCharReader();
+  Json::CharReader *reader = builder.newCharReader();
   std::ifstream in (filename);
   std::string line;
   while(std::getline(in, line)){

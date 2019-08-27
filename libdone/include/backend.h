@@ -55,16 +55,6 @@ namespace backend{
       char const* what() const noexcept;
   };
 
-
-  // Backend& build_filebackend(done::Config& config){
-  //   static Backend fb = FileBackend(config.get_uri());
-  //   return fb;
-  // }
-  // // factory map
-  // const std::map< std::string, Backend& (*func)(done::Config& config) > supported_backends = {
-  //   {"file", build_filebackend}
-  // };
-
   Backend& load_backend(done::Config& config);
 
 }

@@ -40,7 +40,7 @@ LIB := -L /usr/local/lib -ljsoncpp
 CFLAGS += -std=$(CPPVERSION) -stdlib=libc++ -O2
 UNITTEST := -lcppunit
 # Test flags
-CTESTFLAGS := -Wl,--no-as-needed $(UNITTEST) $(CFLAGS)
+CTESTFLAGS := -Wl,--no-as-needed $(UNITTEST) $(CFLAGS) -g
 LIBTEST := $(UNITTEST) $(LIB)
 
 TESTSOURCES := $(shell find $(SRCTESTDIR) -type f -name *.$(SRCEXT))
