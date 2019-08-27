@@ -35,7 +35,7 @@ BUILDLIST := $(patsubst include/%,$(BUILDDIR)/%,$(INCDIRS))
 CPPVERSION= c++1z
 CFLAGS := -c
 INC := -I $(INCLIST) -I /usr/local/include
-LIB := -L /usr/local/lib
+LIB := -L /usr/local/lib -ljsoncpp
 
 CFLAGS += -std=$(CPPVERSION) -stdlib=libc++ -O2
 UNITTEST := -lcppunit
