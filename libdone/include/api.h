@@ -1,3 +1,3 @@
-namespace done{
-  void list_tasks();
+namespace done {
+void list_tasks();
 }

@@ -5,10 +5,10 @@
 using namespace std;
 using namespace done;
 int main() {
-  try{
+  try {
     Task t = Task("hello");
     done::list_tasks();
-  } catch (const std::exception & e) {
+  } catch (const std::exception &e) {
     cout << e.what() << endl;
   }
 }
