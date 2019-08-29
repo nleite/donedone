@@ -1,12 +1,19 @@
+#ifndef CONFIGURATION_H_
+#define CONFIGURATION_H_
 #pragma once
-#include <string>
+
 #include <exception>
+#include <pwd.h>
+#include <string>
+#include <sys/types.h>
+#include <unistd.h>
 
 using namespace std;
 
 namespace done {
 // default configuration file path
-const std::string default_config_path = "/tmp/done/config";
+// const std::string default_config_path = "/tmp/done/config";
+const std::string default_config_path();
 
 class Config {
 private:
@@ -25,7 +32,7 @@ public:
   // Constructor that takes a configuration file path value as argument
   Config(const std::string cfp);
   // delegating constructor
-  Config() : Config(done::default_config_path){};
+  Config() : Config(done::default_config_path()){};
 
   // get the current set config file path
   const std::string &get_config_file_path();
@@ -44,4 +51,6 @@ public:
   BadUriSchema(const std::string &message, const std::string &uri);
   char const *what() const noexcept;
 };
-}
+} // namespace done
+
+#endif // CONFIGURATION_H_

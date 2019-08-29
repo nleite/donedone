@@ -1,6 +1,6 @@
-#include <string>
-#include <fstream>
 #include "configuration.h"
+#include <fstream>
+#include <string>
 
 std::string trim(const std::string &source, const char *delims = " \t\r\n") {
   std::string result(source);
@@ -19,6 +19,13 @@ std::string trim(const std::string &source, const char *delims = " \t\r\n") {
 }
 
 namespace done {
+
+const std::string default_config_path() {
+  struct passwd *pw = getpwuid(getuid());
+  std::string default_config(pw->pw_dir);
+  default_config.append("/.done/config");
+  return default_config.c_str();
+}
 
 const std::string &Config::get_config_file_path() { return path; }
 
@@ -80,4 +87,4 @@ BadUriSchema::BadUriSchema(const std::string &message, const std::string &uri)
 char const *BadUriSchema::what() const noexcept {
   return ("uri: \'" + uri + "\' is incorrect - " + message).c_str();
 }
-}
+} // namespace done

@@ -1,6 +1,7 @@
-#include <iostream>
 #include "backend.h"
 #include "configuration.h"
+#include "task.h"
+#include <iostream>
 
 using namespace std;
 using namespace backend;
@@ -12,7 +13,7 @@ Config load_config() {
   // TODO: allow to overide default config file path location
   return Config();
 }
-}
+} // namespace
 
 void list_tasks() {
   /// load configuration file
@@ -20,7 +21,7 @@ void list_tasks() {
   // load the configured backend
   auto b = backend::load_backend(cfg);
   // read all tasks from backend
-
+  std::vector<Task> tasks = b.get_tasks();
   // print tasks to stdout
 
   cout << "We got so far" << endl;
@@ -28,4 +29,4 @@ void list_tasks() {
   cout << "Configuration file: " << cfg.get_config_file_path() << endl;
   cout << "found uri: " << cfg.get_uri() << endl;
 }
-}
+} // namespace done

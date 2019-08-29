@@ -1,12 +1,12 @@
+#include "test_configuration.h"
+#include "configuration.h"
 #include <cppunit/extensions/HelperMacros.h>
+#include <fstream>
+#include <iostream>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string>
 #include <unistd.h>
-#include <iostream>
-#include <fstream>
-#include "test_configuration.h"
-#include "configuration.h"
 
 using namespace CppUnit;
 using namespace std;
@@ -76,4 +76,12 @@ void TestConfig::test_good_uri_schema() {
   CPPUNIT_ASSERT_NO_THROW(cfg2->get_uri_schema());
   std::string expected = "file";
   CPPUNIT_ASSERT_EQUAL(expected, cfg2->get_uri_schema());
+}
+
+void TestConfig::test_default_constructor() {
+  std::string expected = done::default_config_path();
+  CPPUNIT_ASSERT_EQUAL(expected, cfg3->get_config_file_path());
+  // coment this please - this is only valid on my personal macosx
+  // std::string expected_2 = "/Users/norberto/.done/config";
+  // CPPUNIT_ASSERT_EQUAL(expected_2, cfg3->get_config_file_path());
 }

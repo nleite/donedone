@@ -1,6 +1,8 @@
+#ifndef TEST_CONFIGURATION_H_
+#define TEST_CONFIGURATION_H_
 #pragma once
-#include <cppunit/extensions/HelperMacros.h>
 #include "configuration.h"
+#include <cppunit/extensions/HelperMacros.h>
 
 using namespace CppUnit;
 using namespace std;
@@ -15,6 +17,7 @@ private:
   CPPUNIT_TEST(test_uri_match);
   CPPUNIT_TEST(test_bad_uri_schema);
   CPPUNIT_TEST(test_good_uri_schema);
+  CPPUNIT_TEST(test_default_constructor);
   CPPUNIT_TEST_SUITE_END();
 
   done::Config *cfg1, *cfg2, *cfg3, *bad_config_uri_schema;
@@ -26,6 +29,9 @@ public:
   void test_equality();
   void test_not_equals();
 
+  // constructors
+  void test_default_constructor();
+
   // test correct uri loading
   void test_uri_match();
   void test_bad_uri_schema();
@@ -35,3 +41,5 @@ public:
 void generate_tmp_config_file(std::string *filename, std::string line);
 void delete_tmp_config_file(std::string *filename);
 void add_alphanum_string(const int size, std::string *to_append);
+
+#endif // TEST_CONFIGURATION_H_
