@@ -1,9 +1,9 @@
 #pragma once
-#include <string>
-#include <vector>
-#include <json/reader.h>
 #include "configuration.h"
 #include "task.h"
+#include <json/reader.h>
+#include <string>
+#include <vector>
 
 using namespace std;
 using namespace done;
@@ -53,5 +53,5 @@ public:
   char const *what() const noexcept;
 };
 
-Backend &load_backend(done::Config &config);
-}
+Backend load_backend(done::Config *config);
+} // namespace backend

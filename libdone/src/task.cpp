@@ -1,8 +1,8 @@
 #include "task.h"
+#include <iostream>
 #include <json/value.h>
 #include <string>
 #include <time.h>
-// using namespace std;
 
 Task::Task(std::string t) {
   title = t;
@@ -30,6 +30,17 @@ std::string Task::toString() const { return "title: " + title; }
 
 std::string Task::get_title() const { return title; }
 int Task::get_id() const { return id; }
+
+// operator overloading
+std::ostream &operator<<(std::ostream &os, const Task &t) {
+  std::string mark = "(x)";
+  if (t.done) {
+    mark = "(/)";
+  }
+  os << mark << "\t"
+     << "title: " << t.get_title() << std::endl;
+  return os;
+}
 
 //\ InvalidTask
 const char *InvalidTask::what() const noexcept { return message.c_str(); }

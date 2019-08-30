@@ -1,6 +1,7 @@
 #ifndef TASK_H_
 #define TASK_H_
 #pragma once
+#include <iostream>
 #include <json/value.h>
 #include <string>
 
@@ -23,6 +24,8 @@ public:
   int get_id() const;
   std::string get_title() const;
   std::string toString() const;
+  // operator overloading
+  friend std::ostream &operator<<(std::ostream &os, const Task &t);
 };
 
 class InvalidTask : public std::exception {

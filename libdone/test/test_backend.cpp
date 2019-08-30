@@ -1,9 +1,9 @@
-#include <cppunit/extensions/HelperMacros.h>
-#include <typeinfo>
-#include <fstream>
-#include "test_configuration.h"
 #include "test_backend.h"
 #include "backend.h"
+#include "test_configuration.h"
+#include <cppunit/extensions/HelperMacros.h>
+#include <fstream>
+#include <typeinfo>
 
 using namespace CppUnit;
 using namespace std;
@@ -38,8 +38,10 @@ void TestBackend::setUp() {
   std::string nline = "uri=notgood:///good_file";
   generate_tmp_config_file(&nf, nline);
   unsupportedcfg = new Config(nf);
-
   fe = new FileBackend(tasks_filename);
+
+  // default configuration
+  defaultcfg = new Config();
 }
 
 void TestBackend::tearDown() {
@@ -49,16 +51,18 @@ void TestBackend::tearDown() {
   config_filename = unsupportedcfg->get_config_file_path();
   delete unsupportedcfg;
   delete fe;
+  delete defaultcfg;
+  delete defaultbe;
 }
 
 void TestBackend::test_file_backend() {
   // dynamic cast to FileBackend
-  auto be = dynamic_cast<FileBackend &>(backend::load_backend(*cfg));
+  auto be = backend::load_backend(cfg);
   CPPUNIT_ASSERT_EQUAL(typeid(backend::FileBackend).name(), typeid(be).name());
 }
 
 void TestBackend::test_unsupported_schema() {
-  CPPUNIT_ASSERT_THROW(backend::load_backend(*unsupportedcfg),
+  CPPUNIT_ASSERT_THROW(backend::load_backend(unsupportedcfg),
                        backend::BackendNotSupported);
 }
 
@@ -66,4 +70,15 @@ void TestBackend::test_filebackend_get_tasks_size() {
   vector<Task> tasks = fe->get_tasks();
   size_t expected = 2;
   CPPUNIT_ASSERT_EQUAL(expected, tasks.size());
+}
+
+void TestBackend::test_default_config_tasks_size() {
+  Backend defaultbe = backend::load_backend(defaultcfg);
+  size_t expected = 2;
+  CPPUNIT_ASSERT_EQUAL(expected, defaultbe.get_tasks().size());
+}
+
+void TestBackend::test_default_config_task_filename() {
+  std::string expected = "file:///Users/norberto/.done/tasks";
+  CPPUNIT_ASSERT_EQUAL(expected, defaultcfg->get_uri());
 }
