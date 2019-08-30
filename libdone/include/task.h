@@ -15,6 +15,8 @@ private:
   struct tm *create_date;
   struct tm *last_update;
 
+  std::string compose_output() const;
+
 public:
   // simple title constructor
   Task(std::string t);
@@ -23,6 +25,7 @@ public:
   // getters
   int get_id() const;
   std::string get_title() const;
+  bool is_done() const;
   std::string toString() const;
   // operator overloading
   friend std::ostream &operator<<(std::ostream &os, const Task &t);

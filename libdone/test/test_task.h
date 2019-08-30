@@ -35,6 +35,7 @@ public:
   void test_get_title();
   void test_get_id();
   void test_to_string();
+  void test_is_done_true();
   // ...
 };
 

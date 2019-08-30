@@ -19,6 +19,7 @@ protected:
 public:
   // constructor
   Backend() { hello = "from backend"; }
+  virtual ~Backend(){};
   // virtual method
   virtual std::string hi() { return hello; };
   virtual std::vector<Task> get_tasks() = 0;
@@ -36,7 +37,7 @@ public:
     // hello = "FileBackend";
     builder.settings_["allowSingleQuotes"] = true;
   };
-
+  ~FileBackend();
   std::string hi();
   std::vector<Task> get_tasks();
 };

@@ -13,6 +13,11 @@ namespace backend {
 
 //\ FileBackend
 
+FileBackend::~FileBackend() {
+  // swap the vector to clean its memory allocation
+  std::vector<Task>().swap(tasks);
+}
+
 std::string FileBackend::hi() { return tasks_file; }
 
 std::vector<Task> FileBackend::get_tasks() {
@@ -36,10 +41,12 @@ void FileBackend::load_tasks_from_file() {
     }
     // instanciate tasks
     // add Task to vector
-    tasks.push_back(Task(j["title"].asString()));
+    tasks.push_back(Task(&j));
   }
   // close file
   fp.close();
+  // delete char reader
+  delete reader;
 }
 
 //\ BackendNotSupported

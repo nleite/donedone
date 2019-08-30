@@ -19,6 +19,7 @@ void list_tasks() {
   /// load configuration file
   Config cfg = load_config();
   // load the configured backend
+  /// load_backend creates a `new` backend pointer. we need to call delete.
   auto b = backend::load_backend(&cfg);
   // read all tasks from backend
   std::vector<Task> tasks = b->get_tasks();
@@ -28,9 +29,6 @@ void list_tasks() {
   for (Task t : tasks) {
     cout << t << endl;
   }
-  cout << "We got so far" << endl;
-  cout << "Now with a backend: " << b->hi() << endl;
-  cout << "Configuration file: " << cfg.get_config_file_path() << endl;
-  cout << "found uri: " << cfg.get_uri() << endl;
+  delete b;
 }
 } // namespace done

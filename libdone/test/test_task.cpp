@@ -11,7 +11,8 @@ void TestTask::setUp() {
   Json::CharReader *reader = builder.newCharReader();
   // init json::value objects
   std::string valid_task_json =
-      "{'id': 1, 'title': 'first title', 'description': 'some description'}";
+      "{'id': 1, 'title': 'first title', 'description': 'some description', "
+      "'done': true}";
   valid = new Json::Value();
   std::string errors;
   reader->parse(valid_task_json.c_str(),
@@ -69,3 +70,5 @@ void TestTask::test_to_string() {
   const std::string expected = "title: first title";
   CPPUNIT_ASSERT_EQUAL(expected, t1->toString());
 }
+
+void TestTask::test_is_done_true() { CPPUNIT_ASSERT(t1->is_done()); }

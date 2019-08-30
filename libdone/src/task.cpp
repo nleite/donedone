@@ -23,22 +23,31 @@ Task::Task(Json::Value *json) {
   id = json->get("id", -1).asInt();
   title = json->get("title", "").asString();
   description = json->get("description", "no description").asString();
+
   done = json->get("done", false).asBool();
 }
 
 std::string Task::toString() const { return "title: " + title; }
 
+// getters
 std::string Task::get_title() const { return title; }
 int Task::get_id() const { return id; }
+bool Task::is_done() const { return done; }
+
+std::string Task::compose_output() const {
+  std::string sign = done ? "(/)" : "(x)";
+  std::string start(sign);
+  std::string end = "";
+  if (done) {
+    start.append("\e[9m");
+    end = "\e[0m";
+  }
+  return start + title + end;
+}
 
 // operator overloading
 std::ostream &operator<<(std::ostream &os, const Task &t) {
-  std::string mark = "(x)";
-  if (t.done) {
-    mark = "(/)";
-  }
-  os << mark << "\t"
-     << "title: " << t.get_title();
+  os << t.compose_output();
   return os;
 }
 
