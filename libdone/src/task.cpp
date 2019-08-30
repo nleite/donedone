@@ -38,7 +38,7 @@ std::ostream &operator<<(std::ostream &os, const Task &t) {
     mark = "(/)";
   }
   os << mark << "\t"
-     << "title: " << t.get_title() << std::endl;
+     << "title: " << t.get_title();
   return os;
 }
 

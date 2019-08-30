@@ -21,7 +21,7 @@ void list_tasks() {
   // load the configured backend
   auto b = backend::load_backend(&cfg);
   // read all tasks from backend
-  std::vector<Task> tasks = b.get_tasks();
+  std::vector<Task> tasks = b->get_tasks();
   // print tasks to stdout
   cout << "tasks size" << tasks.size() << endl;
 
@@ -29,7 +29,7 @@ void list_tasks() {
     cout << t << endl;
   }
   cout << "We got so far" << endl;
-  cout << "Now with a backend: " << b.hi() << endl;
+  cout << "Now with a backend: " << b->hi() << endl;
   cout << "Configuration file: " << cfg.get_config_file_path() << endl;
   cout << "found uri: " << cfg.get_uri() << endl;
 }

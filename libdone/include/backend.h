@@ -21,7 +21,7 @@ public:
   Backend() { hello = "from backend"; }
   // virtual method
   virtual std::string hi() { return hello; };
-  virtual std::vector<Task> get_tasks() { return tasks; };
+  virtual std::vector<Task> get_tasks() = 0;
 };
 
 class FileBackend : virtual public Backend {
@@ -33,12 +33,12 @@ private:
 public:
   // constructor
   FileBackend(std::string tfp) : tasks_file(tfp) {
-    hello = "FileBackend";
+    // hello = "FileBackend";
     builder.settings_["allowSingleQuotes"] = true;
   };
 
-  virtual std::string hi();
-  virtual std::vector<Task> get_tasks();
+  std::string hi();
+  std::vector<Task> get_tasks();
 };
 
 class BackendNotSupported : public std::exception {
@@ -53,5 +53,7 @@ public:
   char const *what() const noexcept;
 };
 
-Backend load_backend(done::Config *config);
+// Factory method
+
+Backend *load_backend(done::Config *config);
 } // namespace backend

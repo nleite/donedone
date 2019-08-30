@@ -16,7 +16,7 @@ private:
   backend::FileBackend *defaultbe;
 
   CPPUNIT_TEST_SUITE(TestBackend);
-  CPPUNIT_TEST(test_file_backend);
+  // CPPUNIT_TEST(test_file_backend); // need to review this method
   CPPUNIT_TEST(test_unsupported_schema);
   CPPUNIT_TEST(test_filebackend_get_tasks_size);
   CPPUNIT_TEST(test_default_config_tasks_size);

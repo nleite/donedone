@@ -4,7 +4,6 @@
 #include <fstream>
 #include <string>
 #include <typeinfo>
-
 // Backend is a class that handles different backend implementations
 // For now we are going to keep it to one file backend
 
@@ -14,7 +13,7 @@ namespace backend {
 
 //\ FileBackend
 
-std::string FileBackend::hi() { return hello; }
+std::string FileBackend::hi() { return tasks_file; }
 
 std::vector<Task> FileBackend::get_tasks() {
   load_tasks_from_file();
@@ -24,7 +23,6 @@ std::vector<Task> FileBackend::get_tasks() {
 void FileBackend::load_tasks_from_file() {
   // open file
   std::ifstream fp(tasks_file.c_str());
-  cout << "tasks file: " << tasks_file.c_str() << endl;
   // read file
   std::string line;
   Json::CharReader *reader = builder.newCharReader();
@@ -34,7 +32,6 @@ void FileBackend::load_tasks_from_file() {
     bool parsing_result =
         reader->parse(line.c_str(), line.c_str() + line.size(), &j, &errors);
     if (!parsing_result) {
-      cout << errors << endl;
       break;
     }
     // instanciate tasks
@@ -52,12 +49,15 @@ const char *BackendNotSupported::what() const noexcept {
       .c_str();
 }
 
-// loose methods
+// Factory method
 
-Backend load_backend(done::Config *config) {
+Backend *load_backend(done::Config *config) {
   std::string uri_schema = config->get_uri_schema();
   if (std::string("file").compare(uri_schema) == 0) {
-    FileBackend fb = FileBackend(config->get_uri());
+    // TODO move supported URI prefixes to an util class
+    std::string file_uri_prefix = "file://";
+    std::string tfp = config->get_uri().substr(file_uri_prefix.length());
+    static FileBackend *fb = new FileBackend(tfp);
     return fb;
   }
   throw backend::BackendNotSupported(uri_schema);

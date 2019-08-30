@@ -57,8 +57,11 @@ void TestBackend::tearDown() {
 
 void TestBackend::test_file_backend() {
   // dynamic cast to FileBackend
-  auto be = backend::load_backend(cfg);
-  CPPUNIT_ASSERT_EQUAL(typeid(backend::FileBackend).name(), typeid(be).name());
+  Backend *pbe = backend::load_backend(cfg);
+  FileBackend *pfe = dynamic_cast<FileBackend *>(pbe);
+  std::string expected = "P";
+  expected.append(typeid(backend::FileBackend).name());
+  CPPUNIT_ASSERT_EQUAL(expected.c_str(), typeid(pfe).name());
 }
 
 void TestBackend::test_unsupported_schema() {
@@ -73,9 +76,9 @@ void TestBackend::test_filebackend_get_tasks_size() {
 }
 
 void TestBackend::test_default_config_tasks_size() {
-  Backend defaultbe = backend::load_backend(defaultcfg);
+  Backend *defaultbe = backend::load_backend(defaultcfg);
   size_t expected = 2;
-  CPPUNIT_ASSERT_EQUAL(expected, defaultbe.get_tasks().size());
+  CPPUNIT_ASSERT_EQUAL(expected, defaultbe->get_tasks().size());
 }
 
 void TestBackend::test_default_config_task_filename() {
