@@ -34,8 +34,8 @@ BUILDLIST := $(patsubst include/%,$(BUILDDIR)/%,$(INCDIRS))
 
 CPPVERSION= c++1z
 CFLAGS := -c
-INC := -I $(INCLIST) -I /usr/local/include
-LIB := -L /usr/local/lib -ljsoncpp
+INC := -I $(INCLIST) -I /usr/local/include -I /usr/local/include/docopt
+LIB := -L /usr/local/lib -ljsoncpp -ldocopt
 
 CFLAGS += -std=$(CPPVERSION) -stdlib=libc++ -O2
 UNITTEST := -lcppunit

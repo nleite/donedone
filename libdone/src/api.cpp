@@ -19,7 +19,6 @@ void list_tasks() {
   /// load configuration file
   Config cfg = load_config();
   // load the configured backend
-  /// load_backend creates a `new` backend pointer. we need to call delete.
   auto b = backend::load_backend(&cfg);
   // read all tasks from backend
   std::vector<Task> tasks = b->get_tasks();

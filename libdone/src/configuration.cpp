@@ -23,28 +23,24 @@ namespace done {
 const std::string default_config_path() {
   struct passwd *pw = getpwuid(getuid());
   std::string default_config(pw->pw_dir);
+
   default_config.append("/.done/config");
   return default_config.c_str();
 }
 
 const std::string &Config::get_config_file_path() { return path; }
 
-// configuration from config file
 Config::Config(const std::string cfp) : path(cfp) {
   std::ifstream file(path.c_str());
-  // loaded information vars
-  std::string line;
-  std::string key;
-  std::string value;
+  std::string line, key, value;
   int eq_sign_pos;
-  // iterate over file lines
+
   while (std::getline(file, line)) {
     if (line[0] == '#')
       continue;
     eq_sign_pos = line.find('=');
     key = trim(line.substr(0, eq_sign_pos));
     value = trim(line.substr(eq_sign_pos + 1));
-    // check for URI "uri".compare(key)
     if (keys[0].compare(key) == 0) {
       uri = value;
     }
@@ -55,6 +51,7 @@ const std::string &Config::get_uri() { return uri; }
 
 const std::string Config::get_uri_schema() {
   size_t column_sign_pos = uri.find(':');
+
   if (column_sign_pos == std::string::npos) {
     throw BadUriSchema("schema delimiter (column sign ':') not found", uri);
   }
