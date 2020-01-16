@@ -4,6 +4,7 @@
 #include <json/value.h>
 
 CPPUNIT_TEST_SUITE_REGISTRATION(TestTask);
+CPPUNIT_TEST_SUITE_REGISTRATION(TestTaskFilter);
 
 void TestTask::setUp() {
   Json::CharReaderBuilder builder;
@@ -72,3 +73,52 @@ void TestTask::test_to_string() {
 }
 
 void TestTask::test_is_done_true() { CPPUNIT_ASSERT(t1->is_done()); }
+
+// TestTaskFilter methods
+
+void TestTaskFilter::setUp() {
+  Task t1("some id");
+  Json::CharReaderBuilder builder;
+  builder.settings_["allowSingleQuotes"] = true;
+  Json::CharReader *reader = builder.newCharReader();
+  std::string valid_task_json =
+      "{'id': 1, 'title': 'done task', 'description': 'some description', "
+      "'done': true}";
+  Json::Value *valid = new Json::Value();
+  std::string errors;
+  reader->parse(valid_task_json.c_str(),
+                valid_task_json.c_str() + valid_task_json.size(), valid,
+                &errors);
+  Task t2(valid);
+  Task t3("not done");
+
+  tasks.push_back(t1);
+  tasks.push_back(t2);
+  tasks.push_back(t3);
+}
+
+void TestTaskFilter::tearDown() {}
+
+void TestTaskFilter::test_filter_all() {
+  vector<Task> actual = filter(tasks, filter_all);
+  size_t expected = 3;
+  CPPUNIT_ASSERT_EQUAL(expected, actual.size());
+}
+
+void TestTaskFilter::test_filter_done() {
+  vector<Task> actual = filter(tasks, filter_done);
+  size_t expected = 1;
+  CPPUNIT_ASSERT_EQUAL(expected, actual.size());
+  for (auto &t : actual) {
+    CPPUNIT_ASSERT(t.is_done());
+  }
+}
+
+void TestTaskFilter::test_filter_open() {
+  vector<Task> actual = filter(tasks, filter_open);
+  size_t expected = 2;
+  CPPUNIT_ASSERT_EQUAL(expected, actual.size());
+  for (auto &t : actual) {
+    CPPUNIT_ASSERT(!t.is_done());
+  }
+}

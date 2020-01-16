@@ -45,6 +45,12 @@ std::string Task::compose_output() const {
   return start + title + end;
 }
 
+bool Task::is_due() const {
+  // TODO : evaluate task due date with current time and return true if due time
+  // has passed
+  return false;
+}
+
 // operator overloading
 std::ostream &operator<<(std::ostream &os, const Task &t) {
   os << t.compose_output();
@@ -53,3 +59,9 @@ std::ostream &operator<<(std::ostream &os, const Task &t) {
 
 //\ InvalidTask
 const char *InvalidTask::what() const noexcept { return message.c_str(); }
+
+//\ Task filter methods
+bool filter_all(const Task &t) { return true; }
+bool filter_done(const Task &t) { return t.is_done(); }
+bool filter_due(const Task &t) { return t.is_due(); }
+bool filter_open(const Task &t) { return !t.is_done(); }

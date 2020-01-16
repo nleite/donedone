@@ -22,6 +22,7 @@ private:
   CPPUNIT_TEST(test_get_title);
   CPPUNIT_TEST(test_get_id);
   CPPUNIT_TEST(test_to_string);
+
   CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -37,6 +38,27 @@ public:
   void test_to_string();
   void test_is_done_true();
   // ...
+};
+
+class TestTaskFilter : public CppUnit::TestFixture {
+private:
+  vector<Task> tasks;
+
+  CPPUNIT_TEST_SUITE(TestTaskFilter);
+  CPPUNIT_TEST(test_filter_done);
+  // CPPUNIT_TEST(test_filter_due);
+  CPPUNIT_TEST(test_filter_all);
+  CPPUNIT_TEST(test_filter_open);
+  CPPUNIT_TEST_SUITE_END();
+
+public:
+  void setUp();
+  void tearDown();
+  // filter methods
+  void test_filter_done();
+  // void test_filter_due();
+  void test_filter_all();
+  void test_filter_open();
 };
 
 #endif // TEST_TASK_H_

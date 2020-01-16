@@ -8,7 +8,7 @@ using namespace done;
 static const char USAGE[] =
     R"(donedone
   Usage:
-    done list [-aoc] [-f FILE]
+    done list [-a|-o|-c] [-f FILE]
 
   Options:
     -a --all      List all tasks (including archived tasks)
@@ -23,7 +23,16 @@ int main(int argc, const char **argv) {
     std::map<std::string, docopt::value> args =
         docopt::docopt(USAGE, {argv + 1, argv + argc}, true, "Done 0.1");
     if (args["list"]) {
-      done::list_tasks();
+      if (args["open"]) {
+        done::list_tasks_open();
+        return 0;
+      }
+      if (args["closed"]) {
+        done::list_tasks_done();
+        return 0;
+      }
+      done::list_tasks_all();
+      return 0;
     }
   } catch (const std::exception &e) {
     cout << e.what() << endl;
